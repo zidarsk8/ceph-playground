@@ -1,4 +1,11 @@
 ---
+- name: echoo
+  command: echo "HELLO WORLD"
+
+- name: print vars
+  command: echo "items {{ item }}"
+  with_items: node_packages
+
 - name: install linux packages
   sudo: yes
   with_items: node_packages
@@ -9,6 +16,15 @@
 - name: Ensures .ssh dir exists
   file: path=/home/ubuntu/.ssh state=directory
 
+- name: Ensures /osd dir exists
+  sudo: yes
+  file:
+    path: /osd
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+    mode: 0755
+  
 - name: copy ssh keys
   copy:
     src: "{{ item }}"

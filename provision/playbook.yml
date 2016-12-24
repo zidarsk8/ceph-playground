@@ -6,6 +6,7 @@
   hosts: all
   sudo: yes
   remote_user: ubuntu
+  gather_facts: no
 
   pre_tasks:
     - include: roles/common/pre_tasks/main.yml

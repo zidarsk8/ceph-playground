@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
         node.vm.provision :ansible do |ansible|
           # Disable default limit to connect to all the nodes
           ansible.limit = "all"
+          ansible.verbose = true
           ansible.playbook = "provision/playbook.yml"
         end
       end
