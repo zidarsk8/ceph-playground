@@ -21,12 +21,13 @@ Vagrant.configure("2") do |config|
       node.vm.network "public_network", bridge: "enp3s0"
       # node.vm.network "public_network", ip: "192.168.1.#{50+node_id}"
       
+      disk = ".vagrant/node#{node_id}-osd.vdi"
       node.vm.provider "virtualbox" do |vb|
-        unless File.exist?("node#{node_id}-osd.vdi")
-          vb.customize ['createhd', '--filename', "node#{node_id}-osd.vdi", '--variant', 'Fixed', '--size', 8 * 1024]
+        unless File.exist?(disk)
+          vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 8 * 1024]
         end
         vb.memory = "1024"
-        vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', "node#{node_id}-osd.vdi"]
+        vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', disk]
       end
 
       # Only execute once the Ansible provisioner,
