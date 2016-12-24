@@ -13,13 +13,21 @@ Vagrant.configure("2") do |config|
     node.vm.network "public_network", bridge: "enp3s0"
   end
   
-  N = 3
+  N = 5
   (1..N).each do |node_id|
     config.vm.define "node#{node_id}" do |node|
       node.vm.box = "ubuntu/xenial64"
       node.vm.hostname = "node#{node_id}"
       node.vm.network "public_network", bridge: "enp3s0"
       # node.vm.network "public_network", ip: "192.168.1.#{50+node_id}"
+      
+      node.vm.provider "virtualbox" do |vb|
+        unless File.exist?("node#{node_id}-osd.vdi")
+          vb.customize ['createhd', '--filename', "node#{node_id}-osd.vdi", '--variant', 'Fixed', '--size', 8 * 1024]
+        end
+        vb.memory = "1024"
+        vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', "node#{node_id}-osd.vdi"]
+      end
 
       # Only execute once the Ansible provisioner,
       # when all the nodes are up and ready.
