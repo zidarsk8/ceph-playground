@@ -1,0 +1,7 @@
+---
+
+node_packages:
+  - name: unzip
+  - name: zip
+  - name: vim
+  - name: bash-completion

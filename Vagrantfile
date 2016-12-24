@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     node.vm.network "public_network", bridge: "enp3s0"
   end
   
-  N = 2
+  N = 5
   (1..N).each do |node_id|
     config.vm.define "node#{node_id}" do |node|
       node.vm.box = "ubuntu/xenial64"
@@ -23,13 +23,13 @@ Vagrant.configure("2") do |config|
 
       # Only execute once the Ansible provisioner,
       # when all the nodes are up and ready.
-      # if node_id == N
-      #   node.vm.provision :ansible do |ansible|
-      #     # Disable default limit to connect to all the nodes
-      #     ansible.limit = "all"
-      #     ansible.playbook = "provision/playbook.yml"
-      #   end
-      # end
+      if node_id == N
+        node.vm.provision :ansible do |ansible|
+          # Disable default limit to connect to all the nodes
+          ansible.limit = "all"
+          ansible.playbook = "provision/playbook.yml"
+        end
+      end
     end
   end
 end

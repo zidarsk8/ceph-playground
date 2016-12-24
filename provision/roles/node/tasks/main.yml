@@ -1,0 +1,35 @@
+---
+- name: install linux packages
+  sudo: yes
+  with_items: node_packages
+  apt:
+    pkg: "{{ item.name }}"
+    state: latest
+
+- name: Ensures .ssh dir exists
+  file: path=/home/ubuntu/.ssh state=directory
+
+- name: copy ssh keys
+  copy:
+    src: "{{ item }}"
+    dest: "/home/ubuntu/.ssh/"
+    owner: ubuntu
+    group: ubuntu
+    mode: 0600
+  with_fileglob:
+    - "{{ role_path }}/files/ssh/*"
+
+# Example using key data from a local file on the management machine
+- name: add authorized keys
+  authorized_key:
+    user: ubuntu
+    state: present
+    key: "{{ lookup('file', '{{ role_path }}/files/ssh/id_rsa.pub') }}"
+
+- name: configure bash
+  sudo: yes
+  template:
+    src: bashrc
+    dest: /home/ubuntu/.bashrc
+    owner: ubuntu
+    group: ubuntu

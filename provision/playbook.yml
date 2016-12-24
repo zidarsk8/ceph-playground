@@ -1,0 +1,14 @@
+
+# Copyright (C) 2016 Google Inc.
+# Licensed under http://www.apache.org/licenses/LICENSE-2.0 <see LICENSE file>
+
+- name: Ceph node
+  hosts: all
+  sudo: yes
+  remote_user: ubuntu
+
+  pre_tasks:
+    - include: roles/common/pre_tasks/main.yml
+
+  roles:
+    - node
