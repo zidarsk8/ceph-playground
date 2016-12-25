@@ -8,15 +8,15 @@
 Vagrant.configure("2") do |config|
 
   config.vm.define "master" do |node|
-    node.vm.box = "ubuntu/xenial64"
+    node.vm.box = "ubuntu/trusty64"
     node.vm.hostname = "master"
     node.vm.network "public_network", bridge: "enp3s0"
   end
   
-  N = 5
+  N = 3
   (1..N).each do |node_id|
     config.vm.define "node#{node_id}" do |node|
-      node.vm.box = "ubuntu/xenial64"
+      node.vm.box = "ubuntu/trusty64"
       node.vm.hostname = "node#{node_id}"
       node.vm.network "public_network", bridge: "enp3s0"
       # node.vm.network "public_network", ip: "192.168.1.#{50+node_id}"
@@ -27,7 +27,7 @@ Vagrant.configure("2") do |config|
           vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 8 * 1024]
         end
         vb.memory = "1024"
-        vb.customize ['storageattach', :id,  '--storagectl', 'SCSI', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', disk]
+        vb.customize ['storageattach', :id,  '--storagectl', 'SATAController', '--port', 2, '--device', 0, '--type', 'hdd', '--medium', disk]
       end
 
       # Only execute once the Ansible provisioner,

@@ -15,7 +15,7 @@
 
 
 - name: Ensures .ssh dir exists
-  file: path=/home/ubuntu/.ssh state=directory
+  file: path=/home/vagrant/.ssh state=directory
 
 - name: Ensures /osd dir exists
   sudo: yes
@@ -27,9 +27,9 @@
 - name: copy ssh keys
   copy:
     src: "{{ item }}"
-    dest: "/home/ubuntu/.ssh/"
-    owner: ubuntu
-    group: ubuntu
+    dest: "/home/vagrant/.ssh/"
+    owner: vagrant
+    group: vagrant
     mode: 0600
   with_fileglob:
     - "{{ role_path }}/files/ssh/*"
@@ -37,7 +37,7 @@
 # Example using key data from a local file on the management machine
 - name: add authorized keys
   authorized_key:
-    user: ubuntu
+    user: vagrant
     state: present
     key: "{{ lookup('file', '{{ role_path }}/files/ssh/id_rsa.pub') }}"
 
@@ -45,6 +45,6 @@
   sudo: yes
   template:
     src: bashrc
-    dest: /home/ubuntu/.bashrc
-    owner: ubuntu
-    group: ubuntu
+    dest: /home/vagrant/.bashrc
+    owner: vagrant
+    group: vagrant
