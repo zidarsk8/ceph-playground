@@ -30,5 +30,5 @@ Ssh to the master node and play with cep
 vagrant ssh master
 ```
 
-Create a CEPH cluster by following steps in deploy.sh.
 
+Create a CEPH cluster by following steps in deploy.sh.
