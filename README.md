@@ -31,3 +31,4 @@ vagrant ssh master
 ```
 
 Create a CEPH cluster by following steps in deploy.sh.
+
